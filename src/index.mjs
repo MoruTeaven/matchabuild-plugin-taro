@@ -82,8 +82,11 @@ export default defineRunnerPlugin({
           maxBuffer: 64 * 1024 * 1024,
         });
       } catch (error) {
-        // taro 的编译详情走 stdout，退出信息走 stderr，两边都要看
-        const detail = tailOf(error.stdout) || tailOf(error.stderr);
+        // taro 的编译详情走 stdout，报错走 stderr：两个流的尾部都保留（短路会丢死因）
+        const detail = [error.stderr, error.stdout]
+          .map((chunk) => tailOf(chunk, 20))
+          .filter(Boolean)
+          .join('\n');
         throw new Error(`taro build --type ${platform} 失败：\n${detail || error.message}`);
       }
 
