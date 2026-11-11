@@ -1,0 +1,29 @@
+{
+  "name": "@moruteaven/matchabuild-plugin-taro",
+  "version": "0.1.0-dev.1",
+  "description": "matchabuild 的 Taro 插件：构建微信小程序 / 抖音小程序 / H5",
+  "author": "MoruTeaven <me@MoruTeaven.com>",
+  "license": "MIT",
+  "keywords": [
+    "matchabuild",
+    "plugin",
+    "taro",
+    "miniprogram"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "default": "./src/index.mjs"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "@moruteaven/matchabuild": "^0.1.0-dev.1"
+  },
+  "devDependencies": {
+    "@moruteaven/matchabuild": "workspace:*"
+  }
+}
