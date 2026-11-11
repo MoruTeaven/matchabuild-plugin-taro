@@ -20,6 +20,9 @@
   "files": [
     "src"
   ],
+  "dependencies": {
+    "execa": "^9.6.1"
+  },
   "peerDependencies": {
     "@moruteaven/matchabuild": "^0.1.0-dev.1"
   },

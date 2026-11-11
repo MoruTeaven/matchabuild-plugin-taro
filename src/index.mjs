@@ -1,12 +1,9 @@
-import { execFile } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
-import { promisify } from 'node:util';
+import { execa } from 'execa';
 import { defineRunnerPlugin } from '@moruteaven/matchabuild';
 import { ensureDir, log, removeDir } from '@moruteaven/matchabuild/utils';
-
-const run = promisify(execFile);
 
 /** 子进程失败时，stderr 才是真正的现场；只取尾部若干行，避免刷屏 */
 function tailOf(stderr, lines = 40) {
@@ -75,7 +72,7 @@ export default defineRunnerPlugin({
       await removeDir(clientDist);
       log.step(`taro build --type ${platform}`);
       try {
-        await run(process.execPath, [cli, 'build', '--type', platform], {
+        await execa(process.execPath, [cli, 'build', '--type', platform], {
           cwd: target.dirAbs,
           env: {
             ...process.env,
@@ -108,7 +105,7 @@ export default defineRunnerPlugin({
     const cli = resolveTaroCli(target.dirAbs);
     if (!cli) throw new Error('找不到 @tarojs/cli（taro 依赖未安装）');
     const platform = target.platforms?.[0] ?? 'weapp';
-    await run(process.execPath, [cli, 'build', '--type', platform, '--watch'], {
+    await execa(process.execPath, [cli, 'build', '--type', platform, '--watch'], {
       cwd: target.dirAbs,
       env: { ...process.env, NODE_ENV: 'development' },
     });
